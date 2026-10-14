@@ -1,40 +1,177 @@
-# 📚 Library Management System
+# Library Management System
 
-A robust backend designed to manage college library books, users, and transactions hassle-free.
+A Java-based REST API built with Spring Boot and MySQL to manage library operations, including authors, books, students, library cards, and book issue/return transactions.
 
-**By Tejal Deshmukh**
+## Features
 
----
+- CRUD operations for authors, books, and students.
+- Search and filter books by genre, availability, and author.
+- Automatic library card creation during student registration.
+- Book issue and return workflows with availability tracking.
+- Overdue fine calculation based on loan duration.
+- Database persistence using Spring Data JPA and Hibernate.
+- Request handling and validation for library operations.
 
-## 🔍 Project Overview
+## Technology Stack
 
-This Library Management System backend is a robust and scalable RESTful API built with **Java Spring Boot**, designed to handle the core functionalities of a typical library environment.
+- **Language:** Java 11
+- **Framework:** Spring Boot 2.4.3
+- **Backend:** Spring Web, Spring Data JPA
+- **Database:** MySQL
+- **ORM:** Hibernate
+- **Build Tool:** Maven
+- **Testing Dependencies:** JUnit 5, Spring Boot Test
 
-The system allows for efficient management of books, users, and transactions such as issuing and returning books. It supports role-based access control, enabling distinct privileges for admin and regular users to ensure secure operations.
+## Project Structure
 
-Key features include automated due date calculation, fine management for overdue returns, detailed logging, and exception handling to maintain system integrity. The project uses **MySQL** as the relational database to store and manage data with Spring Data JPA, ensuring seamless CRUD operations and transactional safety.
+```text
+src/main/java/com/StudentLibrary/Studentlibrary/
+├── Controllers/
+├── DTO/
+├── Model/
+├── Repositories/
+├── Services/
+└── StudentLibraryApplication.java
 
-Designed with scalability and maintainability in mind, the backend supports easy extension for additional features such as notifications, reporting, and integration with front-end clients or third-party systems.
+src/main/resources/
+└── application.properties
 
----
+src/test/java/
+```
 
-## 🛠 Technologies and Dependencies
+## Prerequisites
 
-- Maven for dependency management  
-- Spring Boot for building REST APIs  
-- Spring Security for authentication and authorization  
-- Spring Data JPA (Hibernate) for ORM and database operations  
-- MySQL as the database  
-- Project Lombok for reducing boilerplate code  
+- JDK 11
+- MySQL Server
+- Maven 3.6+ (optional if using the included Maven Wrapper)
 
----
+## Setup and Installation
 
-## 📋 How to Use
-
-### CLI Installation:
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/tejal2108/libraryManagementSystem.git
-cd Library-Management-System
-mvn package
-java -jar target/Student-library-0.0.1-SNAPSHOT.jar
+cd libraryManagementSystem
+```
+
+### 2. Create the Database
+
+Open MySQL and execute:
+
+```sql
+CREATE DATABASE library_management;
+```
+
+### 3. Configure Database Connection
+
+Update `src/main/resources/application.properties` with your MySQL credentials.
+
+Example:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/library_management
+spring.datasource.username=${DB_USERNAME:root}
+spring.datasource.password=${DB_PASSWORD:}
+spring.jpa.hibernate.ddl-auto=update
+```
+
+Set the appropriate database username and password for your environment. Do not commit real credentials to GitHub.
+
+### 4. Run the Application
+
+**Windows**
+
+```bat
+mvnw.cmd spring-boot:run
+```
+
+**macOS/Linux**
+
+```bash
+./mvnw spring-boot:run
+```
+
+Alternatively, use an installed Maven version:
+
+```bash
+mvn spring-boot:run
+```
+
+The application runs at `http://localhost:8080` by default.
+
+## API Endpoints
+
+### Authors
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/createAuthor` | Create an author |
+| PUT | `/updateAuthor/{id}` | Update author details |
+| DELETE | `/deleteAuthor?id={id}` | Delete an author |
+
+### Books
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/createBook` | Create a book |
+| GET | `/getBooks` | Retrieve and filter books |
+| GET | `/getBook/{id}` | Retrieve a book by ID |
+| PUT | `/updateBook/{id}` | Update book details |
+| DELETE | `/deleteBook/{id}` | Delete a book |
+
+Book listings support filtering by genre, availability, and author name where configured.
+
+### Students and Library Cards
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/createStudent` | Register a student and create a library card |
+| PUT | `/updateStudent/{id}` | Update student details |
+| DELETE | `/deleteStudent?id={id}` | Delete a student |
+
+### Book Issue and Return
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/issueBook?cardId={cardId}&bookId={bookId}` | Issue a book |
+| POST | `/returnBook?cardId={cardId}&bookId={bookId}` | Return a book and calculate any applicable fine |
+
+## Example Request
+
+### Create a Book
+
+**POST** `/createBook`
+
+```json
+{
+  "name": "Clean Code",
+  "genre": "NON_FICTIONAL",
+  "authorId": 1,
+  "availableCopies": 5
+}
+```
+
+The referenced author must already exist in the database.
+
+## Business Rules
+
+- Limits the number of books that can be issued to a library card.
+- Tracks book availability during issue and return operations.
+- Calculates overdue fines based on the configured loan duration and daily fine.
+- Uses database entities and repositories to manage persistent records.
+
+## API Testing
+
+Endpoints can be tested using Postman. The project also includes Spring Boot testing dependencies for automated testing.
+
+## Future Improvements
+
+- Expand automated unit and integration test coverage.
+- Improve API documentation and request validation.
+- Add pagination and sorting for book listings.
+
+## Author
+
+**Tejal Deshmukh**
+
+GitHub: [tejal2108](https://github.com/tejal2108)
