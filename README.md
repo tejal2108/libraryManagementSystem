@@ -163,15 +163,3 @@ The referenced author must already exist in the database.
 ## API Testing
 
 Endpoints can be tested using Postman. The project also includes Spring Boot testing dependencies for automated testing.
-
-## Future Improvements
-
-- Expand automated unit and integration test coverage.
-- Improve API documentation and request validation.
-- Add pagination and sorting for book listings.
-
-## Author
-
-**Tejal Deshmukh**
-
-GitHub: [tejal2108](https://github.com/tejal2108)
